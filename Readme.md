@@ -1,4 +1,4 @@
-#To start container follow steps below :
+# To start container follow steps below :
 1. Copy .env.example to .env
 2. Run the command:
     `docker-compose --project-name any-wordpress-multisite --env-file ./.env up -d`

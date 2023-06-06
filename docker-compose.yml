@@ -4,7 +4,7 @@ services:
     build: .
     image: wordpress-multisite
     environment:
-      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${DB_NAME:-wp_db}
       WORDPRESS_DB_USER: ${DB_USER:-wp_db_user}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-changeme}
@@ -22,7 +22,7 @@ services:
       - '80:80'
     volumes:
       - wordpress:/var/www/html
-      - ./data/.htaccess:/var/www/html/.htaccess
+      - ./config/.htaccess:/var/www/html/.htaccess
     restart: always
     depends_on:
       - db
@@ -39,6 +39,17 @@ services:
       - '3306:3306'
     volumes:
       - db-data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER:-wp_db_user}
+      PMA_PASSWORD: ${DB_PASSWORD:-changeme}
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
 volumes:
     wordpress:
     db-data:
