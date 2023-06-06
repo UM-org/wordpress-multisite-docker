@@ -1,0 +1,44 @@
+version: '3.1'
+services:
+  wordpress:
+    build: .
+    image: wordpress-multisite
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: ${DB_NAME:-wp_db}
+      WORDPRESS_DB_USER: ${DB_USER:-wp_db_user}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-changeme}
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ALLOW_MULTISITE', true );
+        define('MULTISITE', true);
+        define('SUBDOMAIN_INSTALL', false);
+        define('DOMAIN_CURRENT_SITE', 'localhost');
+        define('PATH_CURRENT_SITE', '/');
+        define('SITE_ID_CURRENT_SITE', 1);
+        define('BLOG_ID_CURRENT_SITE', 1); 
+        define('WP_ALLOW_REPAIR', true);
+    ports:
+      - '80:80'
+    volumes:
+      - wordpress:/var/www/html
+      - ./data/.htaccess:/var/www/html/.htaccess
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-wp_db}
+      MYSQL_USER: ${DB_USER:-wp_db_user}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_PASSWORD: ${DB_PASSWORD:-changeme}
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+    wordpress:
+    db-data:
