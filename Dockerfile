@@ -1,5 +1,5 @@
 # Use a suitable base image (e.g., Ubuntu, Debian, etc.)
-FROM php:8.0-apache
+FROM php:8.1.6-apache
 
 # Install necessary packages
 RUN apt-get update -y && apt-get install -y \ 
@@ -21,8 +21,10 @@ RUN mv -f wordpress/* .
 
 # Set up wordpress configuration
 COPY ./config/wp-config.php /var/www/html/wp-config.php
-COPY ./installer/install.php /var/www/html/wp-admin/install.php
+COPY ./config/.htaccess /var/www/html/.htaccess
+COPY ./config/install.php /var/www/html/wp-admin/install.php
 
+# Install wp-cli
 RUN cd /usr/local && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     php wp-cli.phar --info && \
     chmod +x wp-cli.phar && \
