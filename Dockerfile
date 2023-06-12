@@ -32,8 +32,7 @@ RUN cd /usr/local && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-
 
 # Set up Apache configuration
 COPY ./config/apache.conf /etc/apache2/sites-available/000-default.conf
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
-    a2enmod rewrite && \
+RUN a2enmod rewrite && \
     service apache2 restart
 
 COPY ./config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
