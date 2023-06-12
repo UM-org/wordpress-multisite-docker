@@ -3,6 +3,8 @@ services:
   wordpress:
     build: .
     image: wordpress-multisite
+    args:
+      ServerName: ${ServerName:-localhost}
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${DB_NAME:-wp_db}
