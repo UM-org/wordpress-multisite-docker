@@ -47,7 +47,7 @@ services:
     environment:
       PMA_HOST: db
       PMA_USER: ${DB_USER:-wp_db_user}
-      PMA_PASSWORD: ${DB_PASSWORD:-changeme}
+      # PMA_PASSWORD: ${DB_PASSWORD:-changeme}
     ports:
       - "8080:80"
     depends_on:
