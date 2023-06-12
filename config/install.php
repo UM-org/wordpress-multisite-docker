@@ -422,7 +422,7 @@ switch ( $step ) {
 			$wpdb->show_errors();
 			$result = wp_install( $weblog_title, $user_name, $admin_email, $public, '', wp_slash( $admin_password ), $loaded_language );
             wp_insert_site(array(
-                'domain'       => 'localhost',
+                'domain'       => DOMAIN_CURRENT_SITE ?? 'localhost',
                 'path'         => '/',
                 'network_id'   => get_current_network_id(),
                 'registered'   => $now,
