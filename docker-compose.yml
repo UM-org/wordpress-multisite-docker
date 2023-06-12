@@ -41,17 +41,17 @@ services:
       - '3306:3306'
     volumes:
       - db-data:/var/lib/mysql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    environment:
-      PMA_HOST: db
-      PMA_USER: ${DB_USER:-wp_db_user}
-      # PMA_PASSWORD: ${DB_PASSWORD:-changeme}
-    ports:
-      - "8080:80"
-    depends_on:
-      - db
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin:latest
+  #   restart: always
+  #   environment:
+  #     PMA_HOST: db
+  #     PMA_USER: ${DB_USER:-wp_db_user}
+  #     PMA_PASSWORD: ${DB_PASSWORD:-changeme}
+  #   ports:
+  #     - "8080:80"
+  #   depends_on:
+  #     - db
 volumes:
     wordpress:
     db-data:
