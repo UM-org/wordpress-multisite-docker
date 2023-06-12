@@ -43,5 +43,5 @@ COPY ./config/cron.conf /etc/crontabs/www-data
 EXPOSE 80
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
-
+RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT [ "entrypoint.sh" ]
