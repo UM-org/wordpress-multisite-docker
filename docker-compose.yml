@@ -1,10 +1,11 @@
 version: '3.1'
 services:
   wordpress:
-    build: .
+    build:
+      context: . 
+      args:
+        ServerName: ${ServerName:-localhost}
     image: wordpress-multisite
-    args:
-      ServerName: ${ServerName:-localhost}
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${DB_NAME:-wp_db}
