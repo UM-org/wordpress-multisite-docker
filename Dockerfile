@@ -13,7 +13,7 @@ RUN wget https://wordpress.org/latest.tar.gz && \
     tar -xvzf latest.tar.gz -C /var/www/html && \
     rm latest.tar.gz
 WORKDIR /var/www/html
-
+RUN chown -R www-data:www-data .
 RUN mv -f wordpress/* .
 # Set up custom plugins and themes (optional)
 # COPY plugins/ /usr/src/wordpress/wp-content/plugins/
