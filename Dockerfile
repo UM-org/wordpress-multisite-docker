@@ -14,7 +14,6 @@ RUN wget https://wordpress.org/latest.tar.gz && \
     rm latest.tar.gz
 WORKDIR /var/www/html
 RUN chown -R www-data:www-data .
-
 RUN mv -f wordpress/* .
 # Set up custom plugins and themes (optional)
 # COPY plugins/ /usr/src/wordpress/wp-content/plugins/
@@ -34,13 +33,17 @@ RUN cd /usr/local && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-
 # Set up Apache configuration
 ARG ServerName
 COPY ./config/apache.conf /etc/apache2/sites-available/000-default.conf
+COPY ./config/apache-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+
+RUN sed -i '/SSLCertificateFile.*snakeoil\.pem/c\SSLCertificateFile \/etc\/ssl\/certs\/server.crt' /etc/apache2/sites-available/default-ssl.conf && sed -i '/SSLCertificateKeyFile.*snakeoil\.key/cSSLCertificateKeyFile /etc/ssl/private/server.key\' /etc/apache2/sites-available/default-ssl.conf
 RUN echo "ServerName ${ServerName}" >> /etc/apache2/apache2.conf && \
     a2enmod rewrite && \
+    a2enmod ssl && \
     service apache2 restart
-
+    
 COPY ./config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY ./config/cron.conf /etc/crontabs/www-data
-
+RUN a2ensite default-ssl
 # Expose port 80 for web traffic
 EXPOSE 80
 
