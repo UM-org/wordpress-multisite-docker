@@ -4,25 +4,24 @@ FROM php:8.1.6-apache
 # Install necessary packages
 RUN apt-get update -y && apt-get install -y \ 
     wget \
+    default-mysql-client \
     libmariadb-dev \
     && docker-php-ext-install mysqli \ 
     && docker-php-ext-install pdo_mysql
 
-# Install WordPress
-RUN wget https://wordpress.org/latest.tar.gz && \
-    tar -xvzf latest.tar.gz -C /var/www/html && \
-    rm latest.tar.gz
+# Install WordPress 6.3.1
+RUN wget https://wordpress.org/wordpress-6.3.1.tar.gz && \
+    tar -xvzf wordpress-6.3.1.tar.gz -C /var/www/html && \
+    rm wordpress-6.3.1.tar.gz
 WORKDIR /var/www/html
-RUN chown -R www-data:www-data .
 RUN mv -f wordpress/* .
-# Set up custom plugins and themes (optional)
-# COPY plugins/ /usr/src/wordpress/wp-content/plugins/
-# COPY themes/ /usr/src/wordpress/wp-content/themes/
+RUN rm -rf wordpress
+
+RUN chown -R www-data:www-data .
 
 # Set up wordpress configuration
 COPY ./config/wp-config.php /var/www/html/wp-config.php
 COPY ./config/.htaccess /var/www/html/.htaccess
-COPY ./config/install.php /var/www/html/wp-admin/install.php
 
 # Install wp-cli
 RUN cd /usr/local && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
@@ -32,6 +31,7 @@ RUN cd /usr/local && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-
 
 # Set up Apache configuration
 ARG ServerName
+
 COPY ./config/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY ./config/apache-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 
@@ -43,10 +43,13 @@ RUN echo "ServerName ${ServerName}" >> /etc/apache2/apache2.conf && \
     
 COPY ./config/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY ./config/cron.conf /etc/crontabs/www-data
+
 RUN a2ensite default-ssl
-# Expose port 80 for web traffic
-EXPOSE 80
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
+COPY starting.sh /usr/bin/starting.sh
+
 RUN chmod +x /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/starting.sh
+
 ENTRYPOINT [ "entrypoint.sh" ]

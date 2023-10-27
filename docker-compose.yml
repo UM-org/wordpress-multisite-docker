@@ -4,30 +4,30 @@ services:
     build:
       context: . 
       args:
-        ServerName: ${ServerName:-localhost}
+        ServerName: ${APP_DOMAIN:-localhost}
     image: wordpress-multisite
     environment:
+      APP_NAME: ${APP_NAME:-My_Wordpress_Multisite}
+      APP_URL: ${APP_URL:-https://localhost}
+      APP_ADMIN_NAME: ${APP_ADMIN_NAME:-user}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL:-example@example.com}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-changeme}
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${DB_NAME:-wp_db}
       WORDPRESS_DB_USER: ${DB_USER:-wp_db_user}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-changeme}
-      WORDPRESS_DEBUG: 0 
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_ALLOW_MULTISITE', true );
-        define('MULTISITE', true);
-        define('SUBDOMAIN_INSTALL', false);
-        define('DOMAIN_CURRENT_SITE', '${ServerName:-localhost}');
-        define('PATH_CURRENT_SITE', '/');
-        define('SITE_ID_CURRENT_SITE', 1);
-        define('BLOG_ID_CURRENT_SITE', 1); 
-        define('WP_ALLOW_REPAIR', true);
+        define('DOMAIN_CURRENT_SITE', '${APP_DOMAIN:-localhost}');
     ports:
       - '80:80'
       - '443:443'
     volumes:
+      - ./config/wp-config.php:/var/www/html/wp-config.php
+      - ./config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./certs/server.crt:/etc/ssl/certs/server.crt
       - ./certs/server.key:/etc/ssl/private/server.key
       - wordpress:/var/www/html
+      - ./default-plugins:/home/default-plugins
     restart: always
     depends_on:
       - db
@@ -44,17 +44,18 @@ services:
       - '3306:3306'
     volumes:
       - db-data:/var/lib/mysql
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin:latest
-  #   restart: always
-  #   environment:
-  #     PMA_HOST: db
-  #     PMA_USER: ${DB_USER:-wp_db_user}
-  #     PMA_PASSWORD: ${DB_PASSWORD:-changeme}
-  #   ports:
-  #     - "8080:80"
-  #   depends_on:
-  #     - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: db
+      # PMA_USER: ${DB_USER:-wp_db_user}
+      # PMA_PASSWORD: ${DB_PASSWORD:-changeme}
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
 volumes:
     wordpress:
     db-data:
