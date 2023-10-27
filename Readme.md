@@ -42,7 +42,7 @@ Before you begin, ensure that you have the following software installed on your 
    
    You can now access phpMyAdmin in your browser at https://localhost:8080 with the database credentials set in your .env file.
 
-   (If you're using this in production enivrement please make sure that port 8080 is open for inbound trafic.)  
+   (If you're using this in production environnement please make sure that port 8080 is open for inbound trafic.)  
 
 7. **Stopping the Containers:**
    
