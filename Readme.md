@@ -16,6 +16,7 @@ Before you begin, ensure that you have the following software installed on your 
    ```bash
    git clone https://github.com/UM-org/wordpress-multisite-docker
    cd wordpress-multisite-docker
+   ```
 
 2. **Copy Environment Variables:**
    
@@ -33,23 +34,17 @@ Before you begin, ensure that you have the following software installed on your 
    docker-compose up -d --build
    ```
 
-5. **Access the Wordpress container:**
-   
-   ```bash
-   docker-compose exec wordpress bash
-   ```
-   
-6. **Access the Application's Dashboard:**
+5. **Access the Application's Dashboard:**
    
    You can now access the application's dashboard in your browser at https://localhost/wp-admin with the app credentials set in your .env file.
 
-7. **Access phpMyAdmin:**
+6. **Access phpMyAdmin:**
    
    You can now access phpMyAdmin in your browser at https://localhost:8080 with the database credentials set in your .env file.
 
    (If you're using this in production enivrement please make sure that port 8080 is open for inbound trafic.)  
 
-8. **Stopping the Containers:**
+7. **Stopping the Containers:**
    
    ```bash
    docker-compose down
