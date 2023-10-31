@@ -15,6 +15,7 @@ In order to access the application in reverse proxy mode, some modifications are
 1. Modify the docker-compose.yml file to expose port 8000 over ports 80 and 443.
 
 2. Rebuild the container with port 8000 exposed as application's port.
+
     ```bash
     docker-compose down
     ```
