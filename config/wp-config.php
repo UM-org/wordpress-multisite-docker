@@ -107,7 +107,7 @@ $table_prefix = getenv_docker('WORDPRESS_TABLE_PREFIX', 'wp_');
  * @link https://wordpress.org/documentation/article/debugging-in-wordpress/
  */
 define('WP_DEBUG', false );
-
+define('DOMAIN_CURRENT_SITE', getenv_docker('DOMAIN_CURRENT_SITE', 'localhost'));
 define('WP_ALLOW_MULTISITE', true );
 define('MULTISITE', true);
 define('SUBDOMAIN_INSTALL', false);

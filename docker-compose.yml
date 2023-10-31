@@ -16,8 +16,7 @@ services:
       WORDPRESS_DB_NAME: ${DB_NAME:-wp_db}
       WORDPRESS_DB_USER: ${DB_USER:-wp_db_user}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-changeme}
-      WORDPRESS_CONFIG_EXTRA: |
-        define('DOMAIN_CURRENT_SITE', '${APP_DOMAIN:-localhost}');
+      DOMAIN_CURRENT_SITE: ${APP_DOMAIN:-localhost}
     ports:
       - '8000:80'
     volumes:
