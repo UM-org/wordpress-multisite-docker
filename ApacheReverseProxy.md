@@ -1,4 +1,4 @@
-# Configuration
+# Apache Reverse Proxy Configuration
 
 ## Prerequisites
 
