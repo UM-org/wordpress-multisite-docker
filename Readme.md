@@ -36,7 +36,7 @@ Before you begin, ensure that you have the following software installed on your 
 
 5. **Access the Application's Dashboard:**
    
-   After build is finished, you should wait about 20s until the wordpress app is installed before you can access the application's dashboard in your browser at https://localhost/wp-admin with the app credentials set in your .env file.
+   After build is finished, you should wait until the wordpress app is installed before you can access the application's dashboard in your browser at https://localhost/wp-admin with the app credentials set in your .env file.
 
 6. **Access phpMyAdmin:**
    
@@ -69,6 +69,10 @@ Before you begin, ensure that you have the following software installed on your 
 3. Run Restore Action
 
 Import may take long time. Just wait until it is finished.
+
+## Apache Reverse Proxy Configuration
+
+For production deployment using reverse proxy mode see [Apache Reverse Proxy Configuration](ApacheReverseProxy.md).
 
 ## Additional Notes
 

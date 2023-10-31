@@ -18,7 +18,9 @@ services:
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-changeme}
       DOMAIN_CURRENT_SITE: ${APP_DOMAIN:-localhost}
     ports:
-      - '8000:80'
+      # - '8000:80' #Uncomment this line in reverse proxy mode
+      - '80:80' #Comment this line in reverse proxy mode
+      - '443:443' #Comment this line in reverse proxy mode
     volumes:
       - ./config/wp-config.php:/var/www/html/wp-config.php
       - ./config/.htaccess:/var/www/html/.htaccess
@@ -50,8 +52,6 @@ services:
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      # PMA_USER: ${DB_USER:-wp_db_user}
-      # PMA_PASSWORD: ${DB_PASSWORD:-changeme}
     ports:
       - "8080:80"
     depends_on:
