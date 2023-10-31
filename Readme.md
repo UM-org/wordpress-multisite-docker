@@ -1,4 +1,4 @@
-# Docker Installation Guide
+# Installation Guide
 
 This guide provides step-by-step instructions for setting up and running the application using Docker.
 
