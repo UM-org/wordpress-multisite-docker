@@ -76,5 +76,4 @@ Import may take long time. Just wait until it is finished.
 - Remember to secure sensitive information in your .env file.
 - If you need to modify any wordpress configuration (enable WP_DEBUG for example) you can modify config/wp-config.php directly.
 - If you need to modify php configuration (increase memory_limit for example) you can modify config/uploads.php directly then restart Apache service.
-  
 - For production deployment, make sure to follow Docker and Wordpress best practices.
