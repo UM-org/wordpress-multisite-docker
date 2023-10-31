@@ -82,10 +82,10 @@ Assuming the domain name is example.com, the steps are:
     For Debian-based distributions :
 
     ```bash
-        sudo a2ensite example.com.conf
+    sudo a2ensite example.com.conf
     ```
     ```bash
-        sudo a2ensite example.com-ssl.conf
+    sudo a2ensite example.com-ssl.conf
     ```
 
     ```bash
