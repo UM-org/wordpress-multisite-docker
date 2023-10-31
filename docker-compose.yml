@@ -19,8 +19,7 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         define('DOMAIN_CURRENT_SITE', '${APP_DOMAIN:-localhost}');
     ports:
-      - '80:80'
-      - '443:443'
+      - '8000:80'
     volumes:
       - ./config/wp-config.php:/var/www/html/wp-config.php
       - ./config/.htaccess:/var/www/html/.htaccess
@@ -42,7 +41,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
       MYSQL_PASSWORD: ${DB_PASSWORD:-changeme}
     ports:
-      - '3306:3306'
+      - '3307:3306'
     volumes:
       - db-data:/var/lib/mysql
 
@@ -51,6 +50,7 @@ services:
     restart: always
     environment:
       PMA_HOST: db
+      PMA_PORT: 3306
       # PMA_USER: ${DB_USER:-wp_db_user}
       # PMA_PASSWORD: ${DB_PASSWORD:-changeme}
     ports:
