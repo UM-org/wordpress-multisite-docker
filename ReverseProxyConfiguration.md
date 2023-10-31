@@ -5,8 +5,6 @@
 Before you begin, ensure that you have the following software installed on your system:
 
 - Apache
-- Mariadb
-- PHP
 
 ## Steps
 
