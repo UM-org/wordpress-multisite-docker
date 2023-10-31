@@ -4,7 +4,7 @@
 
 Before you begin, ensure that you have the following software installed on your system:
 
-- Apache with Reverse Proxy
+- Apache2 with Reverse Proxy
 
 ## Steps
 
@@ -39,12 +39,22 @@ Assuming the domain name is example.com, the steps are:
 
 3. Modify example-site/example.conf and example-site/example-ssl.conf with your custom domain name.
 
-4. Create site configuration files :
+4. Create new Virtual Host configuration files
+
+    For RHEL-based distributions :
     ```bash
     sudo cp example-site/example.conf /etc/httpd/conf.d/example.com.conf
     ```
     ```bash
     sudo cp example-site/example-ssl.conf /etc/httpd/conf.d/example.com-ssl.conf
+    ```
+    
+    For Debian-based distributions :
+    ```bash
+    sudo cp example-site/example.conf /etc/apache2/sites-available/example.com.conf
+    ```
+    ```bash
+    sudo cp example-site/example-ssl.conf /etc/apache2/sites-available/example.com-ssl.conf
     ```
 
 5. Add SSL certificate :
@@ -63,5 +73,20 @@ Assuming the domain name is example.com, the steps are:
 7. Enable Apache mod_proxy
 
 8. Restart apache service
+
+    For RHEL-based distributions :
+    ```bash
+    sudo systemctl restart httpd
+    ```
+    
+    For Debian-based distributions :
+
+    ```bash
+        sudo a2ensite example.com.conf && sudo a2ensite example.com-ssl.conf
+    ```
+
+    ```bash
+    sudo service apache2 restart
+    ```
 
 9. Your application should be available at https://example.com.
