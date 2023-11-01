@@ -10,6 +10,8 @@ Before you begin, ensure that you have the following software installed on your 
 - Docker: [Install Docker](https://docs.docker.com/get-docker/)
 - Docker Compose: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
+See [Environment Preparation](EnvironmentPreparation.md)
+
 ## Steps to Install and Run
 
 1. **Clone the Repository:**
