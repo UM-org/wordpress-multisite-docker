@@ -6,6 +6,7 @@ This guide provides step-by-step instructions for setting up and running the app
 
 Before you begin, ensure that you have the following software installed on your system:
 
+- Git
 - Docker: [Install Docker](https://docs.docker.com/get-docker/)
 - Docker Compose: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -60,15 +61,24 @@ Before you begin, ensure that you have the following software installed on your 
    docker-compose exec wordpress service apache2 reload 
    ```
 
-## Steps to Import Backup using WP All in one migration
+## Steps to Export/Import Backup
 
-1. Copy wpress file (***.wpress) to folder /var/lib/docker/volumes/wordpress-multisite-docker_wordpress/_data/wp-content/ai1wm-backups
+Make sure your containers are running.
 
-2. Open https://localhost/wp-admin/network/admin.php?page=ai1wm_backups (You should see the ***.wpress file.)
+- Export :
+  
+    ```bash
+   docker-compose exec wordpress /usr/bin/export.sh
+   ```
+   If the export was successfully executed, you should see a new wp-backup-XXXXXXXXXXX.zip file created in your BACKUP_DIR (./backups by default).
 
-3. Run Restore Action
+- Import :
+  
+    ```bash
+   docker-compose exec wordpress /usr/bin/import.sh -f wp-backup-XXXXXXXXXXX.zip
+   ```
+   where wp-backup-XXXXXXXXXXX.zip is the backup file in your BACKUP_DIR (./backups by default).
 
-Import may take long time. Just wait until it is finished.
 
 ## Apache Reverse Proxy Configuration
 

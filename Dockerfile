@@ -4,6 +4,8 @@ FROM php:8.1.6-apache
 # Install necessary packages
 RUN apt-get update -y && apt-get install -y \ 
     wget \
+    zip \
+    unzip \
     default-mysql-client \
     libmariadb-dev \
     && docker-php-ext-install mysqli \ 
@@ -47,9 +49,13 @@ COPY ./config/cron.conf /etc/crontabs/www-data
 RUN a2ensite default-ssl
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
-COPY starting.sh /usr/bin/starting.sh
+COPY ./scripts/install.sh /usr/bin/install.sh
+COPY ./scripts/export.sh /usr/bin/export.sh
+COPY ./scripts/import.sh /usr/bin/import.sh
 
 RUN chmod +x /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/starting.sh
+RUN chmod +x /usr/bin/install.sh
+RUN chmod +x /usr/bin/export.sh
+RUN chmod +x /usr/bin/import.sh
 
 ENTRYPOINT [ "entrypoint.sh" ]

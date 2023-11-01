@@ -47,23 +47,7 @@ if [ $DB_CONNECTED = true ]; then
       --allow-root
   fi
 
-  #Append below for the plugin installation
-  echo "Installing default plugins..."
-  wp plugin is-installed all-in-one-wp-migration --allow-root --path=${WORDPRESS_PATH}
-  if [ $retVal -eq 1 ]; then
-    echo "all-in-one-wp-migration is already installed."
-  else
-    echo "Installing all-in-one-wp-migration plugin..."
-    wp plugin install ${PLUGINS_PATH}/all-in-one-wp-migration.zip --activate --allow-root --path=${WORDPRESS_PATH}
-  fi
-  wp plugin is-installed all-in-one-wp-migration-multisite-extension --allow-root --path=${WORDPRESS_PATH}
-  if [ $retVal -eq 1 ]; then
-    echo "all-in-one-wp-migration-multisite-extension is already installed."
-  else
-    echo "Installing all-in-one-wp-migration-multisite-extension plugin..."
-    wp plugin install ${PLUGINS_PATH}/all-in-one-wp-migration-multisite-extension.zip --activate --allow-root --path=${WORDPRESS_PATH}
-  fi
-  chown -R www-data:www-data /var/www/html
+  chown -R www-data:www-data $WORDPRESS_PATH
   echo "Wordpress is ready."
   echo "App URL : ${APP_URL}"
 else

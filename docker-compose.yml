@@ -17,6 +17,7 @@ services:
       WORDPRESS_DB_USER: ${DB_USER:-wp_db_user}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-changeme}
       DOMAIN_CURRENT_SITE: ${APP_DOMAIN:-localhost}
+      BACKUP_DIR: ${BACKUP_DIR:-./backups}
     ports:
       # - '8000:80' #Uncomment this line in reverse proxy mode
       - '80:80' #Comment this line in reverse proxy mode
@@ -28,6 +29,7 @@ services:
       - ./certs/server.crt:/etc/ssl/certs/server.crt
       - ./certs/server.key:/etc/ssl/private/server.key
       - wordpress:/var/www/html
+      - ${BACKUP_DIR:-./backups}:/home/backups
       - ./default-plugins:/home/default-plugins
     restart: always
     depends_on:
