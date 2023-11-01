@@ -9,6 +9,10 @@ SUBJECT=wp-migrator
 
 export PATH=$PATH:/usr/local/mysql/bin
 
+GREEN=$'\e[0;32m'
+RED=$'\e[0;31m'
+NC=$'\e[0m'
+
 WORDPRESS_PATH="/var/www/html"
 OUTPUT="/home/backups"
 
@@ -18,7 +22,7 @@ TEMPD=$(mktemp -d -t ${EXPORTNAME}-XXXX)
 
 # Exit if the temp directory wasn't created successfully.
 if [ ! -e "$TEMPD" ]; then
-    >&2 echo "Failed to create temp directory"
+    >&2 echo "${RED}Failed to create temp directory${NC}"
     exit 1
 fi
 
@@ -29,12 +33,17 @@ if [ -d $OUTPUT ]; then
   wp db export $TEMPD/db_dump.sql --path=${WORDPRESS_PATH} --allow-root
   echo "Copying app..."
   cp -afr $WORDPRESS_PATH $TEMPD/app
+  filepath="${OUTPUT}/${EXPORTNAME}.zip"
   cd $TEMPD
-  zip -r ${OUTPUT}/${EXPORTNAME}.zip ./*
-  echo "Backup file successuffly created !"
-  echo "File Path : $BACKUP_DIR/${EXPORTNAME}.zip"
+  zip -r $filepath ./*
+  if [ -e $filepath ]; then
+    echo "${GREEN}Backup file successuffly created !"
+    echo "${GREEN}File Path : $BACKUP_DIR/${EXPORTNAME}.zip${NC}"
+  else
+    echo "${RED}Failed to create backup file !${NC}"
+  fi
 else
-  echo "Output Directory doesn't exists."
+  echo "${RED}Output Directory doesn't exists.${NC}"
   exit 1
 fi
 

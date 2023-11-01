@@ -36,7 +36,6 @@ if [ $DB_CONNECTED = true ]; then
   if [ $IS_INSTALLED -eq 0 ]; then
     #Creating wordpress installation
     echo "Installing wordpress..."
-    echo "App URL : ${APP_URL}"
     wp core multisite-install --path=${WORDPRESS_PATH} \
       --title="${APP_NAME}" \
       --url="${APP_URL}" \
@@ -46,10 +45,18 @@ if [ $DB_CONNECTED = true ]; then
       --skip-email \
       --allow-root
   fi
-
+  #Append below for the default plugins installation
+  echo "Installing default plugins..."
+  wp plugin is-installed hello-dolly --allow-root --path=${WORDPRESS_PATH}
+  if [ $retVal -eq 1 ]; then
+    echo "hello-dolly is already installed."
+  else
+    echo "Installing hello-dolly plugin..."
+    wp plugin install ${PLUGINS_PATH}/hello-dolly.1.7.2.zip --activate --allow-root --path=${WORDPRESS_PATH}
+  fi
   chown -R www-data:www-data $WORDPRESS_PATH
   echo "Wordpress is ready."
-  echo "App URL : ${APP_URL}"
+  echo "Open URL : ${APP_URL}"
 else
   echo "Failed to connect to DB!"
 fi

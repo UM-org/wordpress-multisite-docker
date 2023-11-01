@@ -44,6 +44,10 @@ while getopts ":f:vh" optname
 
 export PATH=$PATH:/usr/local/mysql/bin
 
+GREEN=$'\e[0;32m'
+RED=$'\e[0;31m'
+NC=$'\e[0m'
+
 WORDPRESS_PATH="/var/www/html"
 BACKUP_DIR="/home/backups"
 
@@ -52,7 +56,7 @@ TEMPD=$(mktemp -d)
 
 # Exit if the temp directory wasn't created successfully.
 if [ ! -e "$TEMPD" ]; then
-    >&2 echo "Failed to create temp directory"
+    >&2 echo "${RED}Failed to create temp directory${NC}"
     exit 1
 fi
 
@@ -77,15 +81,15 @@ if [ -e $filepath ]; then
     echo "Importing db dump..."
     wp db import $dump --path=${WORDPRESS_PATH} --allow-root
     echo "Copying app..."
-    cp -afr $TEMPD/app $WORDPRESS_PATH
+    cp -afr $TEMPD/app/. $WORDPRESS_PATH
     chown -R www-data:www-data $WORDPRESS_PATH
-    echo "Backup succeded !"
+    echo "${GREEN}Backup succeded !${NC}"
   else
-    echo "DB dump file doesn't exists."
+    echo "${RED}DB dump file doesn't exists.${NC}"
     exit 1
   fi
 else
-  echo "Backup file doesn't exists."
+  echo "${RED}Backup file doesn't exists.${NC}"
   exit 1
 fi
 
