@@ -6,7 +6,7 @@
 
 VERSION=0.1.0
 SUBJECT=wp-migrator
-USAGE="Usage: ./import.sh -fhv args"
+USAGE="Usage: import.sh -f <filename:required> -d <backup_domain_name:optional>"
 
 # --- Options processing -------------------------------------------
 if [ $# == 0 ] ; then
@@ -14,7 +14,9 @@ if [ $# == 0 ] ; then
     exit 1;
 fi
 
-while getopts ":f:vh" optname
+domain=$APP_DOMAIN
+
+while getopts ":f:d:vh" optname
   do
     case "$optname" in
       "v")
@@ -22,6 +24,8 @@ while getopts ":f:vh" optname
         exit 0;
         ;;
       "f") filename=${OPTARG}
+        ;;
+      "d") domain=${OPTARG}
         ;;
       "h")
         echo $USAGE
@@ -60,13 +64,6 @@ if [ ! -e "$TEMPD" ]; then
     exit 1
 fi
 
-while getopts f: flag
-do
-    case "${flag}" in
-        f) filename=${OPTARG};;
-    esac
-done
-
 filepath="${BACKUP_DIR}/${filename}"
 
 if [ -e $filepath ]; then
@@ -76,10 +73,22 @@ if [ -e $filepath ]; then
   unzip ${filepath} -d $TEMPD
 
   dump="${TEMPD}/db_dump.sql"
-
   if [ -f $db_dump ]; then
     echo "Importing db dump..."
     wp db import $dump --path=${WORDPRESS_PATH} --allow-root
+    if [ $domain != $APP_DOMAIN ]; then
+      echo "Backup App URL is different from current App URL !"
+      echo "Updating App Url..."
+      wp search-replace $domain $APP_DOMAIN --path=${WORDPRESS_PATH} --allow-root --all-tables
+    fi
+    
+    echo "Recovering admin informations..."
+    echo "Changing admin_email..."
+    wp option update admin_email $APP_ADMIN_EMAIL --path=${WORDPRESS_PATH} --allow-root
+
+    echo "Changing admin_name and admin_password..."
+    wp user update 1 --user_email="$APP_ADMIN_EMAIL" --user_pass="$APP_ADMIN_PASSWORD" --path=${WORDPRESS_PATH} --allow-root
+
     echo "Copying app..."
     cp -afr $TEMPD/app/. $WORDPRESS_PATH
     chown -R www-data:www-data $WORDPRESS_PATH
