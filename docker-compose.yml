@@ -55,6 +55,7 @@ services:
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
+      # PMA_ABSOLUTE_URI: ${PMA_ABSOLUTE_URI:-https://localhost/phpmyadmin} #Uncomment this line in reverse proxy mode
     ports:
       - "8080:80"
     depends_on:
